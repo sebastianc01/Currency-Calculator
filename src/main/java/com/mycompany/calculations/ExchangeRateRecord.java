@@ -4,14 +4,16 @@
  */
 package com.mycompany.calculations;
 
+import java.net.URL;
+
 /**
- *  Class responsible for reading online json and saving its important values.
+ *  Data of the single exchange rate record
  * @author Sebastian
  */
-public class ExchangeRateRecord implements ExchangeData {
-    String currencyPair; // about which currency pair is current record
-    double exchangeRate; // exchange rate
-    String date; // date
+public abstract class ExchangeRateRecord implements ExchangeData {
+    private String currencyPair; // about which currency pair is current record
+    private double exchangeRate; // exchange rate
+    private String date; // date
     public void setCurrencyPair(String currencyPair) {
         this.currencyPair = currencyPair;
     }
@@ -36,6 +38,10 @@ public class ExchangeRateRecord implements ExchangeData {
         return date;
     }
     
+    /*
+        Not implemented in ExchangeRateRecord class. 
+        Class will be inherited by other classes to implement multiple formats of files (e.g. json, xml) and different sources (e.g. NBP).
+    */
     
-    
+    public abstract boolean readData();
 }
