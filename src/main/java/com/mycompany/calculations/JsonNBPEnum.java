@@ -12,7 +12,7 @@ import java.net.URL;
  * @author Sebastian
  */
 public enum JsonNBPEnum {
-    PLNGBP("https://api.nbp.pl/api/exchangerates/rates/a/gbp/?format=json"), //temp
+    PLNGBP("https://google.pl/api/exchangerates/rates/a/gbp/?format=jso"), //temp
     GBPPLN("https://api.nbp.pl/api/exchangerates/rates/a/gbp/?format=json"); 
     private final String url;
     JsonNBPEnum(String url) {

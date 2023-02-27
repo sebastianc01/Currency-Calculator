@@ -4,23 +4,18 @@
  */
 package com.mycompany.calculations;
 
-import java.net.URL;
+import com.mycompany.exceptions.IncorrectDataException;
+
 
 /**
  *  Data of the single exchange rate record
  * @author Sebastian
  */
 public abstract class ExchangeRateRecord implements ExchangeData {
-    private String currencyPair; // about which currency pair is current record
+    private String senderCurrency; // sender currency
+    private String receiverCurrency; //receiver currency
     private double exchangeRate; // exchange rate
     private String date; // date
-    public void setCurrencyPair(String currencyPair) {
-        this.currencyPair = currencyPair;
-    }
-    @Override
-    public String getCurrencyPair() {
-        return currencyPair;
-    }
 
     public void setExchangeRate(double exchangeRate) {
         this.exchangeRate = exchangeRate;
@@ -38,10 +33,26 @@ public abstract class ExchangeRateRecord implements ExchangeData {
         return date;
     }
     
+    public void setSenderCurrency(String senderCurrency) {
+        this.senderCurrency = senderCurrency;
+    }
+
+    public void setReceiverCurrency(String receiverCurrency) {
+        this.receiverCurrency = receiverCurrency;
+    }
+    @Override
+    public String getSenderCurrency() {
+        return senderCurrency;
+    }
+    @Override
+    public String getReceiverCurrency() {
+        return receiverCurrency;
+    }
     /*
         Not implemented in ExchangeRateRecord class. 
         Class will be inherited by other classes to implement multiple formats of files (e.g. json, xml) and different sources (e.g. NBP).
     */
     
-    public abstract boolean readData();
+    public abstract void readData() throws IncorrectDataException;
+    public abstract void saveData(String data) throws IncorrectDataException;
 }

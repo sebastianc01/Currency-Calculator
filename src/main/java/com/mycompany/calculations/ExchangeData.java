@@ -5,7 +5,8 @@ package com.mycompany.calculations;
  * @author Sebastian
  */
 public interface ExchangeData {
-    public String getCurrencyPair();
+    public String getSenderCurrency();
+    public String getReceiverCurrency();
     public double getExchangeRate();
     public String getDate();
 }

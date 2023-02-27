@@ -4,8 +4,8 @@
  */
 package com.mycompany.currency.calculatorfxml;
 
-import com.mycompany.calculations.JsonNBPEnum;
-import com.mycompany.calculations.ReadJsonNBP;
+import static com.mycompany.calculations.SelectedExchangeRate.loadExchangeRate;
+import com.mycompany.exceptions.IncorrectDataException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -46,22 +46,28 @@ public class MainMenuFXMLController implements Initializable {
 
     @FXML
     private void calculatorAction(ActionEvent event) {
-        String b = (String) exchangeRateChoiceBox.getSelectionModel().getSelectedItem();
-        Alert alert1 = new Alert(Alert.AlertType.ERROR, b, ButtonType.OK);
-        alert1.showAndWait();
-        Stage stage = (Stage) calculatorButton.getScene().getWindow();
-        stage.close();
-        try{
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/com/mycompany/currency/calculatorfxml/CalculatorFXML.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        ReadJsonNBP a = new ReadJsonNBP(JsonNBPEnum.GBPPLN);
-        stage.setUserData(a);
-        stage.setScene(scene);
-        stage.show();
-        } catch(IOException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+        if(exchangeRateChoiceBox.getSelectionModel().getSelectedItem() == null) { //user did not choose anything, choice box empty
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Exchange rate was not selected.", ButtonType.OK);
             alert.showAndWait();
         }
+        else {
+            try{
+            String selectedItem = (String) exchangeRateChoiceBox.getSelectionModel().getSelectedItem();
+            Stage stage = (Stage) calculatorButton.getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/com/mycompany/currency/calculatorfxml/CalculatorFXML.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            CalculatorFXMLController calcController = (CalculatorFXMLController) fxmlLoader.getController();
+            calcController.setExchangeRate(loadExchangeRate((String) exchangeRateChoiceBox.getSelectionModel().getSelectedItem()));
+            stage.close();
+            stage.setScene(scene);
+            stage.show();
+            } catch(IOException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to open currency calculator.", ButtonType.OK);
+                alert.showAndWait();
+            } catch(IncorrectDataException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+                alert.showAndWait();
+            }
     }
-    
+    }
 }

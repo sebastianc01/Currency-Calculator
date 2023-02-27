@@ -4,37 +4,31 @@
  */
 package com.mycompany.calculations;
 
+import com.mycompany.exceptions.IncorrectDataException;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 
 /**
  *  Class responsible for reading json and saving its important values.
  * @author Sebastian
  */
-public class ReadJsonNBP extends ExchangeRateRecord {
-//    public enum jsonAddress {
-//        PLNGBP("https://api.nbp.pl/api/exchangerates/rates/a/gbp/?format=json"), //temp
-//        GBPPLN("https://api.nbp.pl/api/exchangerates/rates/a/gbp/?format=json"); 
-//        private final String url;
-//        jsonAddress(String url) {
-//            this.url = url;
-//        }
-//        public URL getUrl() throws MalformedURLException {
-//            return new URL(url);
-//        }
-//    }
+public final class ReadJsonNBP extends ExchangeRateRecord {
     private JsonNBPEnum url;
-    public ReadJsonNBP(JsonNBPEnum exchangeRate) {
-        url = exchangeRate;
+    public ReadJsonNBP(String choice) throws IncorrectDataException {
+        if(choice.equals("PLN/GBP")) {
+            url = JsonNBPEnum.PLNGBP;
+        }
+        else if(choice.equals("GBP/PLN")) {
+            url = JsonNBPEnum.GBPPLN;
+        }
+        readData();
     }
+    
     @Override
-    public boolean readData() {
-        StringBuilder json;
+    public void readData() throws IncorrectDataException {
+        StringBuilder json; //MalformedURLException IOException
         try (InputStream input = url.getUrl().openStream()) {
         InputStreamReader isr = new InputStreamReader(input);
         BufferedReader reader = new BufferedReader(isr);
@@ -43,13 +37,31 @@ public class ReadJsonNBP extends ExchangeRateRecord {
         while ((c = reader.read()) != -1) {
             json.append((char) c);
         }
-        } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
-            alert.showAndWait();
-            return false;
+        } catch (IOException e) {
+            throw new IncorrectDataException("Failed to read data from the current selection.");
         }
-        setCurrencyPair(json.toString()); //temporary
-        //return json.toString();
-        return true;
+        saveData(json.toString());
+    }
+    
+    @Override
+    public void saveData(String data) throws IncorrectDataException {
+        int currencyIndex = data.indexOf("\"code\":\"");
+        String currency = data.substring(currencyIndex + "\"code\":\"".length(), data.indexOf("\"", currencyIndex + "\"code\":\"".length()));
+        setSenderCurrency(currency);
+        setReceiverCurrency("PLN");
+        int exchangeRateIndex = data.indexOf("\"mid\":");
+        String exchange = data.substring(exchangeRateIndex + "\"mid\":".length(), data.indexOf("}", exchangeRateIndex + "\"mid\":".length()));
+        try {
+        setExchangeRate(Double.parseDouble(exchange));
+        } catch (NumberFormatException e) {
+            throw new IncorrectDataException("Cannot continue with a current choice, NBP Json data saved improperly.");
+        }
+        int dateIndex = data.indexOf("\"effectiveDate\":\"");
+        String date = data.substring(dateIndex + "\"effectiveDate\":\"".length(), data.indexOf("\"", dateIndex + "\"effectiveDate\":\"".length()));
+        setDate(date);
+        if(getSenderCurrency().isBlank() || getSenderCurrency().isEmpty() ||
+                getDate().isBlank() || getDate().isEmpty()) {
+            
+        }
     }
 }
