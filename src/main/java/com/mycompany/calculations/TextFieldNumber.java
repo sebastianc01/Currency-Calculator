@@ -12,6 +12,8 @@ public enum TextFieldNumber {
         firstTextField {
             @Override
             public double calculate(double value, double exchangeRate) throws ArithmeticException {
+                if(exchangeRate == 0) 
+                    throw new ArithmeticException();
                 return value / exchangeRate;
             }
         },
