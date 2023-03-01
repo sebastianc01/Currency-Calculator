@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.calculations;
+package currency;
 
 import com.mycompany.exceptions.IncorrectDataException;
 import java.io.BufferedReader;
@@ -11,21 +11,36 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
- *  Class responsible for reading json and saving its important values.
+ *  Class responsible for reading json from NBP website and saving its important values.
  * @author Sebastian
  */
 public final class ReadJsonNBP extends ExchangeRateRecord {
     private JsonNBPEnum url;
     public ReadJsonNBP(String choice) throws IncorrectDataException {
-        if(choice.equals("PLN/GBP")) {
-            url = JsonNBPEnum.PLNGBP;
+        if(choice.equals("CHF/PLN")) {
+            url = JsonNBPEnum.CHFPLN;
         }
         else if(choice.equals("GBP/PLN")) {
             url = JsonNBPEnum.GBPPLN;
         }
+        else if(choice.equals("USD/PLN")) {
+            url = JsonNBPEnum.USDPLN;
+        }
+        else if(choice.equals("EUR/PLN")) {
+            url = JsonNBPEnum.EURPLN;
+        }
+        else if(choice.equals("CZK/PLN")) {
+            url = JsonNBPEnum.CZKPLN;
+        }
+        else if(choice.equals("NOK/PLN")) {
+            url = JsonNBPEnum.NOKPLN;
+        }
         readData();
     }
-    
+    /**
+     * Used to read data from the NBP website.
+     * @throws IncorrectDataException created just to avoid throwing many others exceptions. Its message depends on the reason of throwing other exceptions, which simplify the code.
+     */
     @Override
     public void readData() throws IncorrectDataException {
         StringBuilder json; //MalformedURLException IOException
@@ -43,6 +58,10 @@ public final class ReadJsonNBP extends ExchangeRateRecord {
         saveData(json.toString());
     }
     
+    /**
+     * Used to save data in json file type from NBP website.
+     * @throws IncorrectDataException created just to avoid throwing many others exceptions. Its message depends on the reason of throwing other exceptions, which simplify the code.
+     */
     @Override
     public void saveData(String data) throws IncorrectDataException {
         int currencyIndex = data.indexOf("\"code\":\"");

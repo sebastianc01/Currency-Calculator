@@ -4,7 +4,7 @@
  */
 package com.mycompany.currency.calculatorfxml;
 
-import static com.mycompany.calculations.SelectedExchangeRate.loadExchangeRate;
+import static currency.SelectedExchangeRate.loadExchangeRate;
 import com.mycompany.exceptions.IncorrectDataException;
 import java.io.IOException;
 import java.net.URL;
@@ -29,7 +29,8 @@ import javafx.stage.Stage;
  */
 public class MainMenuFXMLController implements Initializable {
 
-    ObservableList<String> exchangeRateList = FXCollections.observableArrayList("GBP/PLN", "PLN/GBP");
+    ObservableList<String> exchangeRateList = FXCollections.observableArrayList(
+            "CHF/PLN", "GBP/PLN","USD/PLN","EUR/PLN", "CZK/PLN", "NOK/PLN");
     
     @FXML
     private ChoiceBox exchangeRateChoiceBox;

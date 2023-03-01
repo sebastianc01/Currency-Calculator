@@ -1,4 +1,4 @@
-package com.mycompany.calculations;
+package currency;
 
 /**
  *  Interface states important methods for a single currency pair.
