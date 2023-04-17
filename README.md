@@ -5,7 +5,7 @@ The easiest way to run the program is to download the whole project from Github,
 
 Currently program reads data from NBP Web API using json file format, but reading from the other sources and file formats can be implemented easily by inheriting ExchangeRateRecord and overriding saveData and readData abstract methods.
 Adding another exchange rates from NBP Web API is even more simple. 
-To do this we should add another enum type in JsonNBPEnum with correct link, add a new if statement to the constructor (or just inherit ReadJsonNBP class, add new exchange rates to its constructor and then call the constructor of the ReadJsonNBP class).
+To do this we should add another enum type in JsonNBPEnum with correct link, add a new if statement to the constructor (or better, just inherit ReadJsonNBP class, add new exchange rates to its constructor and then call the constructor of the ReadJsonNBP class).
 At the end you have to add the new exchange rates to ObservableList in MainMenuFXMLController allowing user to select it.
 
 Project contains a few tests, mostly for important calculation methods.
@@ -24,7 +24,7 @@ After typing 100 to GBP text field:
 
 ![obraz](https://user-images.githubusercontent.com/72347189/222145577-8929c2cb-37c0-4d03-a91b-53fe414becdf.png)
 
-It is also possible to use PLN text field (round is set for 4 decimal places, but can be change easily in CalculateValues class):
+It is also possible to use PLN text field (round is set for 4 decimal places, but can be changed easily in CalculateValues class):
 
 ![obraz](https://user-images.githubusercontent.com/72347189/222146048-4c1bfdff-f77b-4ba1-aee6-c9cfc145bddc.png)
 
