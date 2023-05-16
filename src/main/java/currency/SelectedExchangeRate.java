@@ -17,10 +17,11 @@ final public class SelectedExchangeRate {
     /**
      * 
      * @param choice input string, depending on it specific exchange rate will be selected.
-     * @return ExchangeRate object
-     * @throws IncorrectDataException created just to avoid throwing many others exceptions. Its message depends on the reason of throwing other exceptions, which simplify the code.
+     * @throws IncorrectDataException threw when data was improperly saved
+     * @throws NumberFormatException exchange rate saved improperly
+     * @throws IOException threw when connection failed
      */
-    public static ExchangeRate loadExchangeRate(String choice) throws IncorrectDataException, MalformedURLException, IOException, NumberFormatException {
+    public static ExchangeRate loadExchangeRate(String choice) throws IncorrectDataException, IOException, NumberFormatException {
         return new ExchangeRate(new ReadJsonNBP(choice));
     }
 }
