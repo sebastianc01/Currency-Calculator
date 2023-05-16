@@ -18,6 +18,13 @@ import java.net.MalformedURLException;
  */
 public final class ReadJsonNBP extends ExchangeRateRecord {
     private JsonNBPEnum url;
+    /**
+     * Constructor
+     * @param choice currencies selected
+     * @throws IncorrectDataException threw when data was improperly saved
+     * @throws NumberFormatException exchange rate saved improperly
+     * @throws IOException threw when connection failed
+     */
     public ReadJsonNBP(String choice) throws IncorrectDataException, IOException, NumberFormatException {
         if(choice.equals("CHF/PLN")) {
             url = JsonNBPEnum.CHFPLN;
@@ -41,7 +48,9 @@ public final class ReadJsonNBP extends ExchangeRateRecord {
     }
     /**
      * Used to read data from the NBP website.
-     * @throws IncorrectDataException created just to avoid throwing many others exceptions. Its message depends on the reason of throwing other exceptions, which simplify the code.
+     * @throws IncorrectDataException threw when data was improperly saved
+     * @throws NumberFormatException exchange rate saved improperly
+     * @throws IOException threw when connection failed
      */
     @Override
     public void readData() throws IOException, NumberFormatException, IncorrectDataException {
@@ -59,7 +68,8 @@ public final class ReadJsonNBP extends ExchangeRateRecord {
     
     /**
      * Used to save data in json file type from NBP website.
-     * @throws IncorrectDataException created just to avoid throwing many others exceptions. Its message depends on the reason of throwing other exceptions, which simplify the code.
+     * @throws IncorrectDataException threw when data was improperly saved
+     * @throws NumberFormatException exchange rate saved improperly
      */
     @Override
     public void saveData(String data) throws NumberFormatException, IncorrectDataException {
