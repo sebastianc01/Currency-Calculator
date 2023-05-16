@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
 
 /**
  *  Class responsible for reading json from NBP website and saving its important values.
@@ -17,7 +18,7 @@ import java.math.BigDecimal;
  */
 public final class ReadJsonNBP extends ExchangeRateRecord {
     private JsonNBPEnum url;
-    public ReadJsonNBP(String choice) throws IncorrectDataException {
+    public ReadJsonNBP(String choice) throws IncorrectDataException, IOException, NumberFormatException {
         if(choice.equals("CHF/PLN")) {
             url = JsonNBPEnum.CHFPLN;
         }
@@ -43,18 +44,15 @@ public final class ReadJsonNBP extends ExchangeRateRecord {
      * @throws IncorrectDataException created just to avoid throwing many others exceptions. Its message depends on the reason of throwing other exceptions, which simplify the code.
      */
     @Override
-    public void readData() throws IncorrectDataException {
-        StringBuilder json; //MalformedURLException IOException
-        try (InputStream input = url.getUrl().openStream()) {
+    public void readData() throws IOException, NumberFormatException, IncorrectDataException {
+        StringBuilder json; // 
+        InputStream input = url.getUrl().openStream();
         InputStreamReader isr = new InputStreamReader(input);
         BufferedReader reader = new BufferedReader(isr);
         json = new StringBuilder();
         int c;
         while ((c = reader.read()) != -1) {
             json.append((char) c);
-        }
-        } catch (IOException e) {
-            throw new IncorrectDataException("Failed to read data from the current selection.");
         }
         saveData(json.toString());
     }
@@ -64,18 +62,14 @@ public final class ReadJsonNBP extends ExchangeRateRecord {
      * @throws IncorrectDataException created just to avoid throwing many others exceptions. Its message depends on the reason of throwing other exceptions, which simplify the code.
      */
     @Override
-    public void saveData(String data) throws IncorrectDataException {
+    public void saveData(String data) throws NumberFormatException, IncorrectDataException {
         int currencyIndex = data.indexOf("\"code\":\"");
         String currency = data.substring(currencyIndex + "\"code\":\"".length(), data.indexOf("\"", currencyIndex + "\"code\":\"".length()));
         setSenderCurrency(currency);
         setReceiverCurrency("PLN");
         int exchangeRateIndex = data.indexOf("\"mid\":");
         String exchange = data.substring(exchangeRateIndex + "\"mid\":".length(), data.indexOf("}", exchangeRateIndex + "\"mid\":".length()));
-        try {
-        setExchangeRate(new BigDecimal(exchange));
-        } catch (NumberFormatException e) {
-            throw new IncorrectDataException("Cannot continue with a current choice, NBP Json data saved improperly.");
-        }
+        setExchangeRate(new BigDecimal(exchange));//"Cannot continue with a current choice, NBP Json data saved improperly."
         int dateIndex = data.indexOf("\"effectiveDate\":\"");
         String date = data.substring(dateIndex + "\"effectiveDate\":\"".length(), data.indexOf("\"", dateIndex + "\"effectiveDate\":\"".length()));
         setDate(date);

@@ -5,7 +5,9 @@
 package currency;
 
 import com.mycompany.exceptions.IncorrectDataException;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
 
 
 /**
@@ -57,12 +59,12 @@ public abstract class ExchangeRateRecord implements ExchangeData {
      * Used to read data from the specific source.
      * @throws IncorrectDataException created just to avoid throwing many others exceptions. Its message depends on the reason of throwing other exceptions, which simplify the code.
      */
-    public abstract void readData() throws IncorrectDataException;
+    public abstract void readData() throws IOException, NumberFormatException, IncorrectDataException;
     /**
      * Not implemented in ExchangeRateRecord class. 
      * Used to save data from the specific source.
      * @param data string read from the specific source.
      * @throws IncorrectDataException created just to avoid throwing many others exceptions. Its message depends on the reason of throwing other exceptions, which simplify the code.
      */
-    public abstract void saveData(String data) throws IncorrectDataException;
+    public abstract void saveData(String data) throws NumberFormatException, IncorrectDataException;
 }

@@ -5,6 +5,8 @@
 package currency;
 
 import com.mycompany.exceptions.IncorrectDataException;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 /**
  *  SelectedExchangeRate class has only one static method. 
@@ -18,7 +20,7 @@ final public class SelectedExchangeRate {
      * @return ExchangeRate object
      * @throws IncorrectDataException created just to avoid throwing many others exceptions. Its message depends on the reason of throwing other exceptions, which simplify the code.
      */
-    public static ExchangeRate loadExchangeRate(String choice) throws IncorrectDataException {
+    public static ExchangeRate loadExchangeRate(String choice) throws IncorrectDataException, MalformedURLException, IOException, NumberFormatException {
         return new ExchangeRate(new ReadJsonNBP(choice));
     }
 }

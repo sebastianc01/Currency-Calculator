@@ -7,6 +7,7 @@ package com.mycompany.currency.calculatorfxml;
 import static currency.SelectedExchangeRate.loadExchangeRate;
 import com.mycompany.exceptions.IncorrectDataException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -67,6 +68,9 @@ public class MainMenuFXMLController implements Initializable {
                 alert.showAndWait();
             } catch(IncorrectDataException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+                alert.showAndWait();
+            } catch(NumberFormatException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Cannot continue with a current choice, NBP Json exchange rate saved improperly.", ButtonType.OK);
                 alert.showAndWait();
             }
     }
