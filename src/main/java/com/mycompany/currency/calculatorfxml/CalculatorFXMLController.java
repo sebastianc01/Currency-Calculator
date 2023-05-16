@@ -8,9 +8,7 @@ import currency.ExchangeRate;
 import com.mycompany.calculations.CalculateValues;
 import com.mycompany.calculations.TextFieldNumber;
 import java.io.IOException;
-import java.math.RoundingMode;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -27,7 +25,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 /**
  * FXML Controller class, shows two text fields, allowing user to convert chosen currencies and displaying current exchange rate.

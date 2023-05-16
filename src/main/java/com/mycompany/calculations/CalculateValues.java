@@ -4,6 +4,7 @@
  */
 package com.mycompany.calculations;
 
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
@@ -34,13 +35,13 @@ final public class CalculateValues {
      * @param exchangeRate exchange rate, used in calculations
      * @return output string (converted from double). When input is incorrect then just empty string.
      */
-    public String calculateValue(String value, double exchangeRate) {
+    public String calculateValue(String value, BigDecimal exchangeRate) {
         DecimalFormat df = new DecimalFormat("#.####");
         df.setRoundingMode(RoundingMode.CEILING);
         String result;
         try {
-            if(value.length() <= 16 && df.format(textFieldNumber.calculate(Double.parseDouble(value), exchangeRate)).length() < 16) {
-                result = df.format(textFieldNumber.calculate(Double.parseDouble(value), exchangeRate));
+            if(value.length() <= 16 && df.format(textFieldNumber.calculate(new BigDecimal(value), exchangeRate)).length() < 16) {
+                result = df.format(textFieldNumber.calculate(new BigDecimal(value), exchangeRate));
             }
             else {
                 result = "";

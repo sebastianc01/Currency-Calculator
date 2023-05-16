@@ -4,6 +4,8 @@
  */
 package currency;
 
+import java.math.BigDecimal;
+
 /**
  * Class used as a bridge to the ExchangeRateRecord class.
  * @author Sebastian
@@ -22,7 +24,7 @@ public class ExchangeRate {
     public String getReceiverCurrency() {
         return exchangeRateRecord.getReceiverCurrency();
     }
-    public double getExchangeRate() {
+    public BigDecimal getExchangeRate() {
         return exchangeRateRecord.getExchangeRate();
     }
     public String getDate() {

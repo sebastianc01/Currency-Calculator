@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 
 /**
  *  Class responsible for reading json from NBP website and saving its important values.
@@ -71,7 +72,7 @@ public final class ReadJsonNBP extends ExchangeRateRecord {
         int exchangeRateIndex = data.indexOf("\"mid\":");
         String exchange = data.substring(exchangeRateIndex + "\"mid\":".length(), data.indexOf("}", exchangeRateIndex + "\"mid\":".length()));
         try {
-        setExchangeRate(Double.parseDouble(exchange));
+        setExchangeRate(new BigDecimal(exchange));
         } catch (NumberFormatException e) {
             throw new IncorrectDataException("Cannot continue with a current choice, NBP Json data saved improperly.");
         }
@@ -80,7 +81,7 @@ public final class ReadJsonNBP extends ExchangeRateRecord {
         setDate(date);
         if(getSenderCurrency().isBlank() || getSenderCurrency().isEmpty() ||
                 getDate().isBlank() || getDate().isEmpty()) {
-            
+            throw new IncorrectDataException("Cannot continue with a current choice, NBP Json data saved improperly.");
         }
     }
 }

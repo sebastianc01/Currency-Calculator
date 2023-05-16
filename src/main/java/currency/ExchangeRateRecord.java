@@ -5,6 +5,7 @@
 package currency;
 
 import com.mycompany.exceptions.IncorrectDataException;
+import java.math.BigDecimal;
 
 
 /**
@@ -16,10 +17,10 @@ import com.mycompany.exceptions.IncorrectDataException;
 public abstract class ExchangeRateRecord implements ExchangeData {
     private String senderCurrency; // sender currency
     private String receiverCurrency; // receiver currency
-    private double exchangeRate; // exchange rate
+    private BigDecimal exchangeRate; // exchange rate
     private String date; // date
 
-    public void setExchangeRate(double exchangeRate) {
+    public void setExchangeRate(BigDecimal exchangeRate) {
         this.exchangeRate = exchangeRate;
     }
 
@@ -27,7 +28,7 @@ public abstract class ExchangeRateRecord implements ExchangeData {
         this.date = date;
     }
     @Override
-    public double getExchangeRate() {
+    public BigDecimal getExchangeRate() {
         return exchangeRate;
     }
     @Override
